@@ -33,7 +33,7 @@ public:
 	CheapStepper();
 	CheapStepper (int in1, int in2, int in3, int in4);
 
-	void setRpm (int rpm); // sets speed (10-24 rpm, hi-low torque)
+	void setRpm (double rpm); // sets speed (10-24 rpm, hi-low torque)
 	// <6 rpm blocked in code, may overheat
 	// 23-24rpm may skip
 
@@ -88,7 +88,7 @@ public:
 
 	int getStep() { return stepN; } // returns current miniStep position
 	int getDelay() { return delay; } // returns current delay (microseconds)
-	int getRpm() { return calcRpm(); } // returns current rpm
+	double getRpm() { return calcRpm(); } // returns current rpm
 	int getPin(int p) { 
 		if (p<4) return pins[p]; // returns pin #
 		return 0; // default 0
@@ -97,9 +97,9 @@ public:
 
 private:
 
-	int calcDelay(int rpm); // calcs microsecond step delay for given rpm
-	int calcRpm(int _delay); // calcs rpm for given delay in microseconds
-	int calcRpm(){
+	int calcDelay(double rpm); // calcs microsecond step delay for given rpm
+	double calcRpm(int _delay); // calcs rpm for given delay in microseconds
+	double calcRpm(){
 		return calcRpm(delay); // calcs rpm from current delay
 	}
 

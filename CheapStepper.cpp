@@ -38,7 +38,7 @@ CheapStepper::CheapStepper (int in1, int in2, int in3, int in4) : pins({in1,in2,
 	}
 }
 
-void CheapStepper::setRpm (int rpm){
+void CheapStepper::setRpm (double rpm){
 
 	delay = calcDelay(rpm);
 }
@@ -172,21 +172,21 @@ void CheapStepper::off() {
 // PRIVATE //
 /////////////
 
-int CheapStepper::calcDelay (int rpm){
+int CheapStepper::calcDelay (double rpm){
 
 	if (rpm < 4) return delay; // will overheat, no change
 	else if (rpm >= 24) return 600; // highest speed
 
-	unsigned long d = 60000000 / (totalSteps* (unsigned long) rpm);
+	unsigned long d = 60000000.0 / (totalSteps* rpm);
 	// in range: 600-1465 microseconds (24-1 rpm)
 	return (int) d;
 
 }
 
-int CheapStepper::calcRpm (int _delay){
+double CheapStepper::calcRpm (int _delay){
 
-	unsigned long rpm = 60000000 / (unsigned long) _delay / totalSteps;
-	return (int) rpm;
+	double rpm = 60000000.0 / (unsigned long) _delay / totalSteps;
+	return rpm;
 	
 }
 
