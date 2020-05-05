@@ -26,6 +26,8 @@
 
 #include "Arduino.h"
 
+#include <stdint.h>
+
 class CheapStepper
 {
 
@@ -124,6 +126,8 @@ private:
 	unsigned long lastStepTime; // time in microseconds that last step happened
 	int stepsLeft = 0; // steps left to move, neg for counter-clockwise
 
+	uint32_t steps_done = 0;
+	uint32_t move_start_time_us = 0;
 };
 
 #endif

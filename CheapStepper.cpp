@@ -93,7 +93,8 @@ void CheapStepper::newMove (bool clockwise, int numSteps){
 	if (clockwise) stepsLeft = abs(numSteps);
 	else stepsLeft = -1 * abs(numSteps);
 
-	lastStepTime = micros();
+	steps_done = 0;
+	move_start_time_us = micros();
 }
 
 void CheapStepper::newMoveTo (bool clockwise, int toStep){
@@ -110,7 +111,8 @@ void CheapStepper::newMoveTo (bool clockwise, int toStep){
 	else stepsLeft = -1*(totalSteps - abs(toStep - stepN));
 	// counter-clockwise: totalSteps - diff, made neg
 
-	lastStepTime = micros();
+	steps_done = 0;
+	move_start_time_us = micros();
 }
 
 void CheapStepper::newMoveDegrees (bool clockwise, int deg){
@@ -134,16 +136,16 @@ void CheapStepper::newMoveToDegree (bool clockwise, int deg){
 
 void CheapStepper::run(){
 
-	if (micros() - lastStepTime >= delay) { // if time for step
+	if (micros() - move_start_time_us - delay * steps_done >= delay) { // if time for step
 		if (stepsLeft > 0) { // clockwise
 			stepCW(false);
 			stepsLeft--;
+			++steps_done;
 		} else if (stepsLeft < 0){ // counter-clockwise
 			stepCCW(false);
 			stepsLeft++;
-		} 
-
-		lastStepTime = micros();
+			++steps_done;
+		}
 	}
 }
 
